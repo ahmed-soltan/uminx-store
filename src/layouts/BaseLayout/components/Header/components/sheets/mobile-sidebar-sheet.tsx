@@ -35,7 +35,7 @@ export default function MobileSidebarSheet() {
   const Logout = () => {
     user.logout();
     window.location.reload();
-  }
+  };
 
   return (
     <Sheet open={isModalOpen} onOpenChange={handleClose}>

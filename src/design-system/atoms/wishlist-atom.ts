@@ -1,7 +1,7 @@
 import cache from "@mongez/cache";
 import { atom } from "@mongez/react-atom";
 import { Product, Wishlist } from "../../shared/utils/types";
-import { addItem, deleteItem, getWishlist } from "../services/wishlist-services";
+import { addItem, deleteItem } from "../services/wishlist-services";
 
 export const wishlistAtom = atom<Wishlist>({
   key: "wishlist",

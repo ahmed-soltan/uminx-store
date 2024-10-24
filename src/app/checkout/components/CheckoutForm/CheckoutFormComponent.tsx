@@ -65,7 +65,7 @@ export default function CheckoutFormComponent({
   const Logout = () => {
     user.logout();
     window.location.reload();
-  }
+  };
 
   return (
     <div
