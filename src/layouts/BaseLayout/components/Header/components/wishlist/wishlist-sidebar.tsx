@@ -13,9 +13,7 @@ interface WishlistSidebarProps {
 export default function WishlistSidebar({ navbar }: WishlistSidebarProps) {
   const wishlist = wishlistAtom.useValue();
 
-  const openSheet = () => {
-    modalAtom.onOpen("wishlist");
-  };
+  const openSheet = () => modalAtom.onOpen("wishlist");
 
   if (navbar) {
     return (
@@ -24,31 +22,28 @@ export default function WishlistSidebar({ navbar }: WishlistSidebarProps) {
           <FaRegHeart className="w-4 h-4" />
         </div>
         <h1 className="text-[14px] font-semibold text-primary">
-          {trans("wishlist")} ({" "}
-          {formatNumber(wishlist && wishlist.totalWishlist)} )
+          {trans("wishlist")} ({formatNumber(wishlist.totalWishlist)})
         </h1>
       </div>
     );
   }
 
   return (
-    <>
-      <div className="flex items-center" onClick={openSheet}>
-        <Button variant={"ghost"} className="hover:bg-transparent">
-          <div className="relative">
-            <FaRegHeart className="h-7 w-7 text-primary" />
-            {wishlist.totalWishlist > 0 && (
-              <div
-                className="absolute -top-1 -right-2 bg-rose-600 rounded-full text-[5px] h-[16px] w-[17px]
+    <div className="flex items-center" onClick={openSheet}>
+      <Button variant="ghost" className="hover:bg-transparent">
+        <div className="relative">
+          <FaRegHeart className="h-7 w-7 text-primary" />
+          {wishlist.totalWishlist > 0 && (
+            <div
+              className="absolute -top-1 -right-2 bg-rose-600 rounded-full text-[5px] h-[16px] w-[17px]
                  flex items-center justify-center">
-                <span className="text-xs text-center text-slate-50">
-                  {formatNumber(wishlist && wishlist.totalWishlist)}
-                </span>
-              </div>
-            )}
-          </div>
-        </Button>
-      </div>
-    </>
+              <span className="text-xs text-center text-slate-50">
+                {formatNumber(wishlist.totalWishlist)}
+              </span>
+            </div>
+          )}
+        </div>
+      </Button>
+    </div>
   );
 }

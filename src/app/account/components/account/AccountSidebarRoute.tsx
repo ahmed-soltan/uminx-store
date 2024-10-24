@@ -6,6 +6,7 @@ type RouteType = {
   path: string;
   icon: React.ReactNode;
   data?: number | null;
+  onClick?: () => void;
 };
 
 interface AccountSidebarRouteProps {
@@ -17,6 +18,7 @@ export default function AccountSidebarRoute({
 }: AccountSidebarRouteProps) {
   return (
     <Link
+      onClick={route.onClick}
       href={route.path}
       className={cn(
         "w-full px-2 py-3 flex items-center justify-start gap-2 text-slate-700 bg-[#f6f6f6]",

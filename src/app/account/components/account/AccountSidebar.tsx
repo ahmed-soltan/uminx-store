@@ -6,9 +6,11 @@ import { MdOutlineLogout } from "react-icons/md";
 import { RxDashboard } from "react-icons/rx";
 
 import { addressesAtom } from "app/account/atoms/address-atom";
+import { useLogout } from "app/account/hooks";
 import { wishlistAtom } from "design-system/atoms/wishlist-atom";
 import URLS from "shared/utils/urls";
 import AccountSidebarRoute from "./AccountSidebarRoute";
+import user from "app/account/user";
 
 export default function AccountSidebar() {
   const wishlist = wishlistAtom.value;
@@ -41,6 +43,10 @@ export default function AccountSidebar() {
       label: trans("logout"),
       path: URLS.auth.logout,
       icon: <MdOutlineLogout className="w-5 h-5" />,
+      onClick: () => {
+        user.logout();
+        window.location.reload();
+      },
     },
   ];
 

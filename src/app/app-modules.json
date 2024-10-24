@@ -8,7 +8,7 @@
         "/login",
         "/register",
         "/forget-password",
-        "/rest-password"
+        "/reset-password"
       ],
       "name": "account"
     },

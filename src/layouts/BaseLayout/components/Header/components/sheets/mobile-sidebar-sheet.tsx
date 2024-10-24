@@ -32,6 +32,11 @@ export default function MobileSidebarSheet() {
     modalAtom.onOpen("search");
   };
 
+  const Logout = () => {
+    user.logout();
+    window.location.reload();
+  }
+
   return (
     <Sheet open={isModalOpen} onOpenChange={handleClose}>
       <SheetContent
@@ -70,6 +75,7 @@ export default function MobileSidebarSheet() {
                 className="flex items-start gap-4 flex-col"
                 onClick={handleClose}>
                 <Link
+                  onClick={Logout}
                   href={"#"}
                   className="text-[14px] font-semibold text-primary">
                   <div className="flex items-center gap-1">

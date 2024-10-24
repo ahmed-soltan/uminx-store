@@ -62,6 +62,11 @@ export default function CheckoutFormComponent({
     }
   };
 
+  const Logout = () => {
+    user.logout();
+    window.location.reload();
+  }
+
   return (
     <div
       className={cn(
@@ -90,6 +95,7 @@ export default function CheckoutFormComponent({
                 </AccordionTrigger>
                 <AccordionContent>
                   <Link
+                    onClick={Logout}
                     href={URLS.auth.logout}
                     className="text-sm text-lightAqua underline">
                     {trans("logout")}
