@@ -1,7 +1,11 @@
 import cache from "@mongez/cache";
 import { atom } from "@mongez/react-atom";
 import { Product, Wishlist } from "../../shared/utils/types";
-import { addItem, deleteItem } from "../services/wishlist-services";
+import {
+  addItem,
+  deleteItem,
+  getWishlist,
+} from "../services/wishlist-services";
 
 export const wishlistAtom = atom<Wishlist>({
   key: "wishlist",
@@ -16,15 +20,17 @@ export const wishlistAtom = atom<Wishlist>({
     },
 
     addToWishlist: async (product: Product) => {
-      const newWishlist = await addItem(product.id);
-      cache.set("wishlist", newWishlist.data);
-      return wishlistAtom.update(newWishlist.data);
+      await addItem(product.id);
+      const wishlistData = await getWishlist();
+      cache.set("wishlist", wishlistData.data);
+      return wishlistAtom.update(wishlistData.data);
     },
 
     deleteItem: async (itemId: number) => {
-      const newWishlist = await deleteItem(itemId);
-      cache.set("wishlist", newWishlist.data);
-      return wishlistAtom.update(newWishlist.data);
+      await deleteItem(itemId);
+      const wishlistData = await getWishlist();
+      cache.set("wishlist", wishlistData.data);
+      return wishlistAtom.update(wishlistData.data);
     },
   },
 });

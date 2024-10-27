@@ -3,8 +3,8 @@ import { FiTrash2 } from "react-icons/fi";
 
 import { Button } from "design-system/components/ui/button";
 import { Input } from "design-system/components/ui/input";
-import { useCartQuantity } from "shared/hooks/useCartQuantity";
-import { useDeleteCartItem } from "shared/hooks/useDeleteCartItem";
+import { useCartQuantity } from "shared/hooks/use-cart-quantity";
+import { useDeleteCartItem } from "shared/hooks/use-delete-cartItem";
 import { formatNumber, formatPrice } from "shared/lib/formats";
 import { translateText } from "shared/utils/translate-text";
 import { CartItemType } from "shared/utils/types";

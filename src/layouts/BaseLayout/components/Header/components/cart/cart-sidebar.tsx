@@ -25,7 +25,7 @@ export default function CartSidebar() {
             className="absolute -top-1 -right-2 bg-rose-600 rounded-full 
                 text-[5px] h-[16px] w-[17px] flex items-center justify-center">
             <span className="text-xs text-center text-slate-50 ">
-              {formatNumber(cart.totals.quantity)}
+              {formatNumber(cart && cart.totals ? cart.totals.quantity : 0)}
             </span>
           </div>
         </div>
@@ -33,7 +33,7 @@ export default function CartSidebar() {
       <div className="hidden xl:flex flex-col items-start">
         <span className="text-xs text-slate-600">{trans("cart")}</span>
         <p className="text-sm font-semibold text-primary p-0">
-          {formatPrice(cart.totals.subtotal)}
+          {formatPrice(cart && cart.totals ? cart.totals.subtotal : 0)}
         </p>
       </div>
     </div>

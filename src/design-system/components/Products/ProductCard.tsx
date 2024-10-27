@@ -1,7 +1,6 @@
 import { trans } from "@mongez/localization";
 import { Link } from "@mongez/react-router";
 import { CheckIcon, Cross1Icon, HeartIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
 import { FaRegEye } from "react-icons/fa";
 import { FiCheck } from "react-icons/fi";
 import { IoGitCompare } from "react-icons/io5";
@@ -21,15 +20,15 @@ type TProduct = {
 };
 
 export default function ProductCard({ product, grid }: TProduct) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isInWishlist, setIsInWishlist] = useState(product.inWishlist);
-  const [isInCompare, setIsInCompare] = useState(product.inCompare);
   const {
     addToCompare,
     addToWishlist,
     handleAddToCart,
     removeFromWishlist,
     removeFromCompare,
+    isLoading,
+    isInWishlist,
+    isInCompare,
   } = useProductActions(product);
 
   let discount = 0;
@@ -38,52 +37,6 @@ export default function ProductCard({ product, grid }: TProduct) {
       ((product.price - product.salePrice) * 100) / product.price,
     );
   }
-
-  const addItemToCart = async () => {
-    if (product.inStock) {
-      setIsLoading(true);
-      handleAddToCart();
-    } else {
-      return;
-    }
-    setIsLoading(false);
-  };
-
-  const handleAddToWishlist = async () => {
-    if (!isInWishlist) {
-      setIsLoading(true);
-      addToWishlist();
-      setIsInWishlist(true);
-    }
-    setIsLoading(false);
-  };
-
-  const handleAddToCompare = async () => {
-    if (!isInCompare) {
-      setIsLoading(true);
-      addToCompare();
-      setIsInCompare(true);
-    }
-    setIsLoading(false);
-  };
-
-  const handleRemoveFromWishlist = () => {
-    if (isInWishlist) {
-      setIsLoading(true);
-      removeFromWishlist();
-      setIsInWishlist(false);
-    }
-    setIsLoading(false);
-  };
-
-  const handleRemoveFromCompare = () => {
-    if (isInCompare) {
-      setIsLoading(true);
-      removeFromCompare();
-      setIsInCompare(false);
-    }
-    setIsLoading(false);
-  };
 
   return (
     <div
@@ -107,7 +60,7 @@ export default function ProductCard({ product, grid }: TProduct) {
             <>
               <FiCheck
                 className="size-4 group-hover/wishlist:text-white transition-all duration-300"
-                onClick={handleRemoveFromWishlist}
+                onClick={removeFromWishlist}
               />
               <p className="inline-block pointer-events-none absolute bg-primary text-white right-11 text-xs px-2 py-1 rounded-sm w-max opacity-0 group-hover/wishlist:opacity-100 translate-x-2 group-hover/wishlist:translate-x-0 transition-all duration-500 after:content-[''] after:-right-2 after:top-1/2 after:-translate-y-1/2 after:size-2 after:bg-primary after:absolute after:clip-triangle after:rotate-90">
                 {trans("Added to Wishlist")}
@@ -117,7 +70,7 @@ export default function ProductCard({ product, grid }: TProduct) {
             <>
               <HeartIcon
                 className="size-4 group-hover/wishlist:text-white transition-all duration-300"
-                onClick={handleAddToWishlist}
+                onClick={addToWishlist}
               />
               <p className="inline-block pointer-events-none absolute bg-primary text-white right-11 text-xs px-2 py-1 rounded-sm w-max opacity-0 group-hover/wishlist:opacity-100 translate-x-2 group-hover/wishlist:translate-x-0 transition-all duration-500 after:content-[''] after:-right-2 after:top-1/2 after:-translate-y-1/2 after:size-2 after:bg-primary after:absolute after:clip-triangle after:rotate-90">
                 {trans("Add to Wishlist")}
@@ -142,7 +95,7 @@ export default function ProductCard({ product, grid }: TProduct) {
             <>
               <FiCheck
                 className="size-4 group-hover/compare:text-white transition-all duration-300"
-                onClick={handleRemoveFromCompare}
+                onClick={removeFromCompare}
               />
               <p className="inline-block pointer-events-none absolute bg-primary text-white right-11 text-xs px-2 py-1 rounded-sm w-max opacity-0 group-hover/compare:opacity-100 translate-x-2 group-hover/wishlist:translate-x-0 transition-all duration-500 after:content-[''] after:-right-2 after:top-1/2 after:-translate-y-1/2 after:size-2 after:bg-primary after:absolute after:clip-triangle after:rotate-90">
                 {trans("Added to Compare")}
@@ -152,7 +105,7 @@ export default function ProductCard({ product, grid }: TProduct) {
             <>
               <IoGitCompare
                 className="size-4 group-hover/compare:text-white transition-all duration-300"
-                onClick={handleAddToCompare}
+                onClick={addToCompare}
               />
               <p className="inline-block  pointer-events-none  absolute bg-primary text-white right-11 text-xs px-2 py-1 rounded-sm w-max opacity-0 group-hover/compare:opacity-100 translate-x-2 group-hover/compare:translate-x-0 transition-all duration-500 after:content-[''] after:-right-2 after:top-1/2 after:-translate-y-1/2 after:size-2 after:bg-primary after:absolute after:clip-triangle after:rotate-90">
                 {trans("Add to Compare")}
@@ -214,7 +167,7 @@ export default function ProductCard({ product, grid }: TProduct) {
         <Button
           disabled={isLoading}
           variant={product.inStock ? "primary" : "destructive"}
-          onClick={addItemToCart}
+          onClick={handleAddToCart}
           className={`w-full h-8 md:h-10 rounded-full mt-4`}>
           {isLoading ? (
             <LuLoader2 className="w-4 h-4 animate-spin" />

@@ -23,12 +23,7 @@ import { compareAtom } from "../../atoms/compare-atom";
 
 export default function CompareModel() {
   const data = modalAtom.useValue();
-  const [_, setTicks] = useState(0);
-  const compareProducts = compareAtom.useValue();
-
-  const updateState = () => {
-    setTicks(prevTicks => prevTicks + 1);
-  };
+  const { products } = compareAtom.useValue();
 
   const isModalOpen = data.isOpen && data.type === "compare";
   if (!isModalOpen) {
@@ -49,7 +44,7 @@ export default function CompareModel() {
             {trans("compare")}
           </DialogTitle>
         </DialogHeader>
-        {compareProducts.length > 0 ? (
+        {products.length > 0 ? (
           <Table className="border-[.5px] border-slate-300 m-5 scrollbar">
             <TableHeader>
               <TableRow>
@@ -58,12 +53,9 @@ export default function CompareModel() {
                  font-normal text-primary">
                   {trans("Products")}
                 </TableHead>
-                {compareProducts.map((product: Product) => (
+                {products.map((product: Product) => (
                   <TableHead key={product.id} className="py-4 relative">
-                    <CompareTableHead
-                      compareItem={product}
-                      updateState={updateState}
-                    />
+                    <CompareTableHead compareItem={product} />
                   </TableHead>
                 ))}
               </TableRow>
@@ -75,7 +67,7 @@ export default function CompareModel() {
                  text-base font-normal text-primary">
                   {trans("Description")}
                 </TableCell>
-                {compareProducts.map((product: Product) => (
+                {products.map((product: Product) => (
                   <TableCell
                     key={product.id}
                     className="table-cell
@@ -92,7 +84,7 @@ export default function CompareModel() {
                  text-base font-normal text-primary">
                   {trans("Category")}
                 </TableCell>
-                {compareProducts.map((product: Product) => (
+                {products.map((product: Product) => (
                   <TableCell
                     key={product.id}
                     className="table-cell
@@ -107,7 +99,7 @@ export default function CompareModel() {
                  text-base font-normal text-primary">
                   {trans("Availability")}
                 </TableCell>
-                {compareProducts.map((product: Product) => (
+                {products.map((product: Product) => (
                   <TableCell
                     key={product.id}
                     className="table-cell 
@@ -129,7 +121,7 @@ export default function CompareModel() {
                   text-base font-normal text-primary">
                   {trans("Type")}
                 </TableCell>
-                {compareProducts.map((product: Product) => (
+                {products.map((product: Product) => (
                   <TableCell
                     key={product.id}
                     className="table-cell 
@@ -144,7 +136,7 @@ export default function CompareModel() {
                   text-base font-normal text-primary">
                   {trans("Discount")}
                 </TableCell>
-                {compareProducts.map((product: Product) => (
+                {products.map((product: Product) => (
                   <TableCell
                     key={product.id}
                     className="table-cell 

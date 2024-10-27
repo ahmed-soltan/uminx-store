@@ -1,6 +1,5 @@
 import cache from "@mongez/cache";
 import { atom } from "@mongez/react-atom";
-
 import { toast } from "shared/hooks/use-toast";
 import { CartType, Product } from "shared/utils/types";
 import {
@@ -18,38 +17,86 @@ export const cartAtom = atom<CartType>({
     return cart;
   },
   actions: {
-    addToCart: async (product: Product, quantity?: number) => {
+    addToCart: async (product: Product, quantity = 1) => {
       try {
-        const newCart = await addItem(product.id, quantity || 1);
-
+        const newCart = await addItem(product.id, quantity);
         cache.set("cart", newCart.data.cart);
         return cartAtom.update(newCart.data.cart);
       } catch (error: any) {
-        console.log(error);
+        console.error(error);
         toast({
           title: "Error",
-          description: "something went wrong",
+          description: "Something went wrong",
           variant: "destructive",
         });
       }
     },
 
-    async updateQuantity(itemId: number, quantity: number) {
-      const newCart = await updateItem(itemId, quantity);
-      cache.set("cart", newCart.data.cart);
-      cartAtom.update(newCart.data.cart);
+    updateQuantity: async (itemId: number, quantity: number) => {
+      const previousCart = cartAtom.value;
+      const updatedCart = {
+        ...previousCart,
+        items: previousCart.items.map(item =>
+          item.id === itemId ? { ...item, quantity } : item,
+        ),
+      };
+      cartAtom.update(updatedCart);
+
+      try {
+        const newCart = await updateItem(itemId, quantity);
+        cache.set("cart", newCart.data.cart);
+        return cartAtom.update(newCart.data.cart);
+      } catch (error) {
+        console.error(error);
+        toast({
+          title: "Error",
+          description: "Failed to update quantity",
+          variant: "destructive",
+        });
+        return cartAtom.update(previousCart);
+      }
     },
 
-    async deleteItem(itemId: number) {
-      const newCart = await deleteItem(itemId);
-      cache.set("cart", newCart.data.cart);
-      return cartAtom.update(newCart.data.cart);
+    deleteItem: async (itemId: number) => {
+      const previousCart = cartAtom.value;
+      const updatedCart = {
+        ...previousCart,
+        items: previousCart.items.filter(item => item.id !== itemId),
+      };
+      cartAtom.update(updatedCart);
+
+      try {
+        const newCart = await deleteItem(itemId);
+        cache.set("cart", newCart.data.cart);
+        return cartAtom.update(newCart.data.cart);
+      } catch (error) {
+        console.error(error);
+        toast({
+          title: "Error",
+          description: "Failed to delete item",
+          variant: "destructive",
+        });
+        return cartAtom.update(previousCart);
+      }
     },
 
     deleteAllItems: async () => {
-      const newCart = await flushCart();
-      cache.set("cart", newCart.data.cart);
-      return cartAtom.update(newCart.data.cart);
+      const previousCart = cartAtom.value;
+      cartAtom.update({ ...previousCart, items: [] });
+
+      try {
+        const newCart = await flushCart();
+        cache.set("cart", newCart.data.cart);
+        return cartAtom.update(newCart.data.cart);
+      } catch (error) {
+        console.error(error);
+        toast({
+          title: "Error",
+          description: "Failed to clear cart",
+          variant: "destructive",
+        });
+        return cartAtom.update(previousCart);
+      }
     },
   },
 });

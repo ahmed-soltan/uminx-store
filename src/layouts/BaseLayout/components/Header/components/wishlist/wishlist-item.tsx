@@ -2,7 +2,7 @@ import { FiX } from "react-icons/fi";
 
 import { currencyAtom } from "design-system/atoms/currency-atom";
 import { Button } from "design-system/components/ui/button";
-import { useDeleteWishlistItem } from "shared/hooks/useDeleteWishlistItem";
+import { useDeleteWishlistItem } from "shared/hooks/use-delete-wishlistItem";
 import { formatPrice } from "shared/lib/formats";
 import { translateText } from "shared/utils/translate-text";
 import { Product } from "shared/utils/types";

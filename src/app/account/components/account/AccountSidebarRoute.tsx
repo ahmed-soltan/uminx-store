@@ -13,9 +13,11 @@ interface AccountSidebarRouteProps {
   route: RouteType;
 }
 
-export default function AccountSidebarRoute({ route }: AccountSidebarRouteProps) {
+export default function AccountSidebarRoute({
+  route,
+}: AccountSidebarRouteProps) {
   const { label, path, icon, data, onClick } = route;
-  
+
   return (
     <Link
       onClick={onClick}
@@ -23,9 +25,8 @@ export default function AccountSidebarRoute({ route }: AccountSidebarRouteProps)
       className={cn(
         "w-full px-2 py-3 flex items-center justify-start gap-2 text-slate-700 bg-[#f6f6f6]",
         "hover:bg-slate-900 hover:text-white transition-all rounded-sm text-sm",
-        label === "Dashboard" && "bg-blue text-white"
-      )}
-    >
+        label === "Dashboard" && "bg-blue text-white",
+      )}>
       {icon}
       <p className="font-semibold">{label.toUpperCase()}</p>
       {data !== undefined && data !== null && (

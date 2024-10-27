@@ -18,7 +18,7 @@ export default function CompareModelContainer() {
         <FiLayers className="w-4 h-4" />
       </div>
       <h1 className="text-[14px] font-semibold text-slate-900 ">
-        {trans("compare")} ( {formatNumber(compare.length)} )
+        {trans("compare")} ( {formatNumber(compare.products.length)} )
       </h1>
     </div>
   );

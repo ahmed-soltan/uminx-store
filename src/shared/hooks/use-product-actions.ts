@@ -12,6 +12,9 @@ import URLS from "shared/utils/urls";
 
 export const useProductActions = (product: Product) => {
   const [estimatedDelivery, setEstimatedDelivery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInWishlist, setIsInWishlist] = useState(product.inWishlist);
+  const [isInCompare, setIsInCompare] = useState(product.inCompare);
 
   const [isChecked, setIsChecked] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -32,7 +35,13 @@ export const useProductActions = (product: Product) => {
   };
 
   const handleAddToCart = async () => {
-    await cartAtom.addToCart(product, quantity);
+    if (product.inStock) {
+      setIsLoading(true);
+      await cartAtom.addToCart(product, quantity);
+    } else {
+      return;
+    }
+    setIsLoading(false);
     modalAtom.onOpen("cart");
     toast({
       variant: "success",
@@ -51,7 +60,12 @@ export const useProductActions = (product: Product) => {
   };
 
   const addToCompare = async () => {
-    await compareAtom.addToCompare(product);
+    if (!isInCompare) {
+      setIsLoading(true);
+      await compareAtom.addToCompare(product);
+      setIsInCompare(true);
+    }
+    setIsLoading(false);
     modalAtom.onOpen("compare");
     toast({
       variant: "success",
@@ -61,7 +75,12 @@ export const useProductActions = (product: Product) => {
   };
 
   const addToWishlist = async () => {
-    await wishlistAtom.addToWishlist(product);
+    if (!isInWishlist) {
+      setIsLoading(true);
+      await wishlistAtom.addToWishlist(product);
+      setIsInWishlist(true);
+    }
+    setIsLoading(false);
     modalAtom.onOpen("wishlist");
     toast({
       variant: "success",
@@ -71,8 +90,12 @@ export const useProductActions = (product: Product) => {
   };
 
   const removeFromWishlist = async () => {
-    await wishlistAtom.deleteItem(product.id);
-    modalAtom.onOpen("wishlist");
+    if (isInWishlist) {
+      setIsLoading(true);
+      await wishlistAtom.deleteItem(product.id);
+      setIsInWishlist(false);
+    }
+    setIsLoading(false);
     toast({
       variant: "destructive",
       title: trans("Removed From Wishlist"),
@@ -80,9 +103,13 @@ export const useProductActions = (product: Product) => {
     });
   };
 
-  const removeFromCompare = () => {
-    compareAtom.deleteItem(product.id);
-    modalAtom.onOpen("compare");
+  const removeFromCompare = async () => {
+    if (isInCompare) {
+      setIsLoading(true);
+      await compareAtom.deleteItem(product.id);
+      setIsInCompare(false);
+    }
+    setIsLoading(false);
     toast({
       variant: "destructive",
       title: trans("Removed From Compare"),
@@ -133,5 +160,8 @@ export const useProductActions = (product: Product) => {
     quantity,
     estimatedDelivery,
     handleRemoveFromCart,
+    isLoading,
+    isInWishlist,
+    isInCompare,
   };
 };

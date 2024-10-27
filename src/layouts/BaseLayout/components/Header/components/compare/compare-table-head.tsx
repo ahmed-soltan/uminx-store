@@ -8,16 +8,13 @@ import { Product } from "shared/utils/types";
 
 interface CompareTableHeadProps {
   compareItem: Product;
-  updateState: () => void;
 }
 
 export default function CompareTableHead({
   compareItem,
-  updateState,
 }: CompareTableHeadProps) {
   const handleDeleteCompareItem = async () => {
     await compareAtom.deleteItem(compareItem.id);
-    updateState();
   };
 
   return (

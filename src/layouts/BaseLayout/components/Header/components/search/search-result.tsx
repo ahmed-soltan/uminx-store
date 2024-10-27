@@ -4,7 +4,7 @@ import { FiX } from "react-icons/fi";
 
 import { Button } from "design-system/components/ui/button";
 import { ScrollArea } from "design-system/components/ui/scroll-area";
-import { useDebouncedSearch } from "shared/hooks/useDebouncedSearch";
+import { useDebouncedSearch } from "shared/hooks/use-debounced-search";
 import { formatPrice } from "shared/lib/formats";
 import { translateText } from "shared/utils/translate-text";
 import { Product } from "shared/utils/types";
