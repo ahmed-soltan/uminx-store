@@ -3,10 +3,10 @@ import { useState } from "react";
 import { TbGridDots } from "react-icons/tb";
 import { TfiLayoutGrid4 } from "react-icons/tfi";
 
+import SortFilter from "design-system/components/Products/filters/SortFilter";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 import { Filters } from "shared/hooks/use-filters";
 import { cn } from "shared/lib/utils";
-import { SORT_OPTIONS } from "shared/utils/data";
 import { Product } from "shared/utils/types";
 import { Button } from "../ui/button";
 import FiltersSection from "./FiltersSection";
@@ -48,10 +48,6 @@ export default function ProductsList({
 }: ProductsListProps) {
   const [gridLayout, setGridLayout] = useState<number>(4);
 
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    updateSortOptions(e.target.value);
-  };
-
   const handleGridLayoutChange = (columns: number) => {
     setGridLayout(columns);
   };
@@ -59,28 +55,11 @@ export default function ProductsList({
   return (
     <>
       <div className="w-full p-3 text-right bg-white rounded-md mt-4 hidden md:flex items-center justify-end gap-4">
-        <label htmlFor="sort" className="text-sm text-gray font-medium">
-          {trans("Sort By")}:{" "}
-        </label>
-        <select
-          id="sort"
-          value={filters.sort}
-          onChange={handleSortChange}
-          className="text-sm font-medium ring-0 focus:ring-0 focus-visible:ring-0">
-          {SORT_OPTIONS.map(option => (
-            <option
-              key={option.value}
-              value={option.value}
-              className="text-primary">
-              {option.name}
-            </option>
-          ))}
-        </select>
+        <SortFilter filters={filters} updateSortOptions={updateSortOptions} />
         <p className="text-darkGray text-sm font-medium">
           {paginationInfo.total} {trans("Results")}
         </p>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-5 w-full gap-5">
         <div className="hidden md:block">
           <FiltersSection

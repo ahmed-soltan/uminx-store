@@ -45,14 +45,6 @@ export default function AccountDetails() {
         </TableRow>
         <TableRow>
           <TableCell className="table-cell text-sm font-normal text-slate-900 min-w-[200px] md:w-[300px]">
-            {trans("Gender")}
-          </TableCell>
-          <TableCell className="table-cell py-3 text-slate-600">
-            {user.get("gender")}
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="table-cell text-sm font-normal text-slate-900 min-w-[200px] md:w-[300px]">
             {trans("Total Cart Products")}
           </TableCell>
           <TableCell className="table-cell py-3 text-slate-600">

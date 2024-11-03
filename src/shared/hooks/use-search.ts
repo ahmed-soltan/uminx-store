@@ -1,5 +1,5 @@
 import { navigateTo, queryString } from "@mongez/react-router";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import URLS from "shared/utils/urls";
 
 type UseSearchResult = {
@@ -23,24 +23,15 @@ export const useSearch = (): UseSearchResult => {
   const [value, setValue] = useState("");
   const [category, setCategory] = useState("");
   const [categoryId, setCategoryId] = useState<number | null>(null);
-  const searchValueMap = useRef<Map<number | null, string>>(new Map());
   const params = queryString.toQueryString({ q: value, category: categoryId });
 
   const storeInputValue = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
-    if (searchValueMap.current.get(categoryId) === inputValue) {
-      return;
-    }
-
     setValue(inputValue);
 
     if (category && !inputValue.includes(category)) {
       setCategory("");
-    }
-
-    if (inputValue.trim()) {
-      searchValueMap.current.set(categoryId, inputValue);
     }
   };
 

@@ -1,27 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trans } from "@mongez/localization";
-import { addressesAtom } from "app/account/atoms/address-atom";
-import { Button } from "design-system/components/ui/button";
-import { Form } from "design-system/components/ui/form";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
+import { z } from "zod";
+
+import { addressesAtom } from "app/account/atoms/address-atom";
+import { Button } from "design-system/components/ui/button";
+import { Form } from "design-system/components/ui/form";
 import { toast } from "shared/hooks/use-toast";
 import { AddressFormSchema } from "shared/schemas/address-form-schema";
 import { Address } from "shared/utils/types";
-import { z } from "zod";
 import AddressFormInputs from "./AddressFormInputs";
 
 interface AddressDetailsCardProps {
   address: Address;
-  updateData: () => void;
 }
 
 export default function AddressDetailsCard({
   address,
-  updateData,
 }: AddressDetailsCardProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<z.infer<typeof AddressFormSchema>>({
     resolver: zodResolver(AddressFormSchema),
     defaultValues: {
@@ -35,6 +36,7 @@ export default function AddressDetailsCard({
 
   const onSubmit = async (data: z.infer<typeof AddressFormSchema>) => {
     try {
+      setIsLoading(true);
       const { default: isPrimary, ...addressData } = data;
       await addressesAtom.updateAddress(address.id, addressData);
 
@@ -47,8 +49,6 @@ export default function AddressDetailsCard({
         title: "Address Updated",
         description: "Address has been updated successfully",
       });
-
-      updateData();
     } catch (error) {
       console.error(error);
       toast({
@@ -56,17 +56,19 @@ export default function AddressDetailsCard({
         title: "Something went wrong",
         description: "An error occurred while updating the address",
       });
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+      form.reset();
+      setIsEditing(false);
     }
-    form.reset();
-    setIsEditing(false);
   };
 
   const onDelete = async () => {
-    addressesAtom.deleteAddress(address.id);
-    updateData();
+    setIsLoading(true);
+    await addressesAtom.deleteAddress(address.id);
+    setIsLoading(false);
   };
-
-  const isLoading = form.formState.isSubmitting;
 
   return (
     <div className="flex flex-col w-full gap-3">
@@ -92,6 +94,7 @@ export default function AddressDetailsCard({
             <Button
               onClick={onDelete}
               variant={"primary"}
+              disabled={isLoading}
               className="h-12 flex items-center gap-2 w-28">
               <FaRegTrashAlt className="h-5 w-5" />
               {trans("Delete")}

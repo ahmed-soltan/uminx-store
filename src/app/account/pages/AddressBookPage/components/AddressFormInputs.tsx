@@ -1,5 +1,7 @@
 import { trans } from "@mongez/localization";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import { UseFormReturn } from "react-hook-form";
+
 import { Checkbox } from "design-system/components/ui/checkbox";
 import {
   FormControl,
@@ -10,7 +12,6 @@ import {
   FormMessage,
 } from "design-system/components/ui/form";
 import { Input } from "design-system/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
 
 interface AddressFormInputsProps {
   form: UseFormReturn<

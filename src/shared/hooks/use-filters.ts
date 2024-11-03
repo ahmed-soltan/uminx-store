@@ -49,49 +49,28 @@ export function useFilters() {
   };
 
   const updateCategory = (newCategory: number | null) => {
-    if (newCategory === filters.category) {
-      const updatedFilters = { ...filters, category: null };
-      setFilters(updatedFilters);
-      updateURLParams(updatedFilters);
-      return;
-    }
-    const updatedFilters = { ...filters, category: newCategory };
+    const updatedFilters = {
+      ...filters,
+      category: newCategory === filters.category ? null : newCategory,
+    };
     setFilters(updatedFilters);
     updateURLParams(updatedFilters);
   };
 
   const updateInStock = (newInStock: boolean | null) => {
-    if (newInStock === filters.inStock) {
-      const updatedFilters = { ...filters, inStock: null };
-      setFilters(updatedFilters);
-      updateURLParams(updatedFilters);
-      return;
-    }
-    const updatedFilters = { ...filters, inStock: true };
+    const updatedFilters = { ...filters, inStock: newInStock || null };
     setFilters(updatedFilters);
     updateURLParams(updatedFilters);
   };
 
   const updateMinPrice = debounce((newMinPrice: number | null) => {
-    if (newMinPrice === 0) {
-      const updatedFilters = { ...filters, minPrice: null };
-      setFilters(updatedFilters);
-      updateURLParams(updatedFilters);
-      return;
-    }
-    const updatedFilters = { ...filters, minPrice: newMinPrice };
+    const updatedFilters = { ...filters, minPrice: newMinPrice || null };
     setFilters(updatedFilters);
     updateURLParams(updatedFilters);
   }, 500);
 
   const updateMaxPrice = debounce((newMaxPrice: number | null) => {
-    if (newMaxPrice === 0) {
-      const updatedFilters = { ...filters, maxPrice: null };
-      setFilters(updatedFilters);
-      updateURLParams(updatedFilters);
-      return;
-    }
-    const updatedFilters = { ...filters, maxPrice: newMaxPrice };
+    const updatedFilters = { ...filters, maxPrice: newMaxPrice || null };
     setFilters(updatedFilters);
     updateURLParams(updatedFilters);
   }, 500);
@@ -142,9 +121,8 @@ export function useFilters() {
       ...currentFilters,
       ...initialURLFilters,
     }));
-
-    updateURLParams(initialURLFilters);
-  }, [updateURLParams]);
+    setParams(queryString.toQueryString(initialURLFilters));
+  }, []);
 
   return {
     filters,

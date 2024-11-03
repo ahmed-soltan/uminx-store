@@ -17,49 +17,25 @@ export const addressesAtom = atom<Address[]>({
   },
   actions: {
     addAddress: async (data: Address) => {
-      const addresses = addressesAtom.value;
       const response = await addAddress(data);
-      addresses.push(response.data.address);
-      addressesAtom.update(addresses);
-      cache.set("addresses", addresses);
+      addressesAtom.update(response.data.addresses);
+      cache.set("addresses", response.data.addresses);
       return response.data.address.id;
     },
     setPrimaryAddress: async (addressId: number) => {
-      await setPrimaryAddress(addressId);
-      const addresses = addressesAtom.value;
-      const primaryAddress = addresses.find(
-        address => address.id === addressId,
-      );
-      if (primaryAddress) {
-        primaryAddress.isPrimary = true;
-        addresses.forEach(address => {
-          if (address.id !== addressId) {
-            address.isPrimary = false;
-          }
-        });
-        addressesAtom.update(addresses);
-        cache.set("addresses", addresses);
-      }
+      const response = await setPrimaryAddress(addressId);
+      addressesAtom.update(response.data.addresses);
+      cache.set("addresses", response.data.addresses);
     },
     deleteAddress: async (addressId: number) => {
-      await deleteAddress(addressId);
-      const addresses = addressesAtom.value;
-      const index = addresses.findIndex(address => address.id === addressId);
-      if (index > -1) {
-        addresses.splice(index, 1);
-        addressesAtom.update(addresses);
-        cache.set("addresses", addresses);
-      }
+      const response = await deleteAddress(addressId);
+      addressesAtom.update(response.data.addresses);
+      cache.set("addresses", response.data.addresses);
     },
     updateAddress: async (addressId: number, addressData: Address) => {
-      await updateAddress(addressId, addressData);
-      const addresses = addressesAtom.value;
-      const index = addresses.findIndex(address => address.id === addressId);
-      if (index > -1) {
-        addresses[index] = { ...addresses[index], ...addressData };
-        addressesAtom.update(addresses);
-        cache.set("addresses", addresses);
-      }
+      const response = await updateAddress(addressId, addressData);
+      addressesAtom.update(response.data.addresses);
+      cache.set("addresses", response.data.addresses);
     },
   },
 });

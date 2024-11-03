@@ -1,8 +1,8 @@
 import { trans } from "@mongez/localization";
 import Helmet from "@mongez/react-helmet";
 import { Separator } from "design-system/components/ui/separator";
-import AccountContainer from "../../components/account/AccountContainer";
-import AccountSidebar from "../../components/account/AccountSidebar";
+import AccountContainer from "./components/AccountContainer";
+import AccountSidebar from "./components/AccountSidebar";
 
 export default function AccountPage() {
   return (

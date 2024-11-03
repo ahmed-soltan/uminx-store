@@ -1,6 +1,7 @@
 import { trans } from "@mongez/localization";
 import { VscSettings } from "react-icons/vsc";
 
+import SortFilter from "design-system/components/Products/filters/SortFilter";
 import {
   Sheet,
   SheetContent,
@@ -9,7 +10,6 @@ import {
   SheetTrigger,
 } from "design-system/components/ui/sheet";
 import { Filters } from "shared/hooks/use-filters";
-import { SORT_OPTIONS } from "shared/utils/data";
 import { isRTL } from "shared/utils/helpers";
 import FiltersSection from "./FiltersSection";
 
@@ -42,9 +42,6 @@ export default function FiltersSidebarSheet({
   filters,
   paginationInfo,
 }: FiltersSidebarSheetProps) {
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    updateSortOptions(e.target.value);
-  };
 
   return (
     <Sheet>
@@ -65,7 +62,13 @@ export default function FiltersSidebarSheet({
         <p className="text-primary text-sm font-medium text-center mt-5">
           {paginationInfo.total} {trans("Results")}
         </p>
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start mt-5">
+          <div className="w-full p-2 flex items-center justify-between gap-4">
+            <SortFilter
+              filters={filters}
+              updateSortOptions={updateSortOptions}
+            />
+          </div>
           <FiltersSection
             filters={filters}
             resetFiltersExceptQuery={resetFiltersExceptQuery}
@@ -74,25 +77,6 @@ export default function FiltersSidebarSheet({
             updateMaxPrice={updateMaxPrice}
             updateMinPrice={updateMinPrice}
           />
-          <div className="w-full p-2 flex items-center justify-between gap-4">
-            <label htmlFor="sort" className="text-sm text-gray font-medium">
-              {trans("Sort By")}:{" "}
-            </label>
-            <select
-              id="sort"
-              value={filters.sort}
-              onChange={handleSortChange}
-              className="text-sm font-medium focus:ring-0 focus-visible:ring-0 ring-1 ring-primary rounded-sm p-1">
-              {SORT_OPTIONS.map(option => (
-                <option
-                  key={option.value}
-                  value={option.value}
-                  className="text-primary">
-                  {option.name}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
       </SheetContent>
     </Sheet>

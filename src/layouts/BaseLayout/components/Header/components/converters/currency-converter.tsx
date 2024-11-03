@@ -21,7 +21,7 @@ export default function CurrencyConverter() {
   };
   const currentCurrency = currencyAtom.useValue();
   const changeCurrency = (currency: string) => {
-    currencyAtom.update(currency);
+    currencyAtom.updateCurrency(currency);
   };
 
   const currencies = ["USD", "EGP"];

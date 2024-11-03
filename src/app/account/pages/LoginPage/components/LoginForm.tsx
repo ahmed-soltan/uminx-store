@@ -15,11 +15,13 @@ import {
   FormMessage,
 } from "design-system/components/ui/form";
 import { Input } from "design-system/components/ui/input";
+import { useState } from "react";
 import { toast } from "shared/hooks/use-toast";
 import { LoginFormSchema } from "shared/schemas/login-form-schema";
 import URLS from "shared/utils/urls";
 
 export default function LoginForm() {
+  const [error, setError] = useState("");
   const origin = queryString.get("origin");
   const form = useForm<z.infer<typeof LoginFormSchema>>({
     resolver: zodResolver(LoginFormSchema),
@@ -46,10 +48,7 @@ export default function LoginForm() {
       }
     } catch (error: any) {
       console.error(error);
-      toast({
-        variant: "destructive",
-        title: error.response.data.messages[0].error,
-      });
+      setError(error.response.data.error);
     }
   };
 
@@ -110,10 +109,12 @@ export default function LoginForm() {
             className="text-cyan-600 text-sm">
             {trans("forgotPassword")}
           </Link>
+          {error && <p className="text-red text-sm font-medium">{error}</p>}
         </div>
         <Button
           variant={"primary"}
           size={"lg"}
+          disabled={isLoading}
           className="w-full rounded-full h-12">
           {trans("login")}
         </Button>
@@ -122,7 +123,7 @@ export default function LoginForm() {
           variant={"outline"}
           size={"lg"}
           className="w-full rounded-full h-12 border-blue">
-          <Link href={URLS.auth.login}>{trans("createAccount")}</Link>
+          <Link href={URLS.auth.register}>{trans("createAccount")}</Link>
         </Button>
       </form>
     </Form>

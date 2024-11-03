@@ -1,21 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trans } from "@mongez/localization";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { addressesAtom } from "app/account/atoms/address-atom";
+import AddressFormInputs from "app/account/pages/AddressBookPage/components/AddressFormInputs";
 import { Button } from "design-system/components/ui/button";
 import { Form } from "design-system/components/ui/form";
-import { useState } from "react";
 import { toast } from "shared/hooks/use-toast";
 import { AddressFormSchema } from "shared/schemas/address-form-schema";
-import AddressFormInputs from "./AddressFormInputs";
 
-export default function AddAddressForm({
-  updateData,
-}: {
-  updateData: () => void;
-}) {
+export default function AddAddressForm() {
   const addresses = addressesAtom.useValue();
   const [addressesLength, setAddressesLength] = useState(addresses.length);
   const form = useForm<z.infer<typeof AddressFormSchema>>({
@@ -56,7 +52,6 @@ export default function AddAddressForm({
       });
     }
     form.reset();
-    updateData();
   };
 
   return (

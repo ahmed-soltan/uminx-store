@@ -1,16 +1,12 @@
 import { trans } from "@mongez/localization";
 import { Link } from "@mongez/react-router";
 import { useEffect, useState } from "react";
-import { FaAngleDown } from "react-icons/fa";
 import discountSvg from "shared/assets/images/discount.svg";
-import { cn } from "shared/lib/utils";
-import { isLTR } from "shared/utils/helpers";
 import URLS from "shared/utils/urls";
 import CategoryLists from "./components/category/category-list";
 import SearchInput from "./components/search/search-input";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
@@ -45,52 +41,9 @@ export default function Navbar() {
             <li className="text-black text-sm font-semibold hover:text-blue">
               <Link href={URLS.shop.collections}>{trans("shop")}</Link>
             </li>
-            <div className="relative">
-              <li
-                className="text-black text-sm font-semibold hover:text-blue flex items-center cursor-pointer"
-                onMouseEnter={() => setIsOpen(true)}
-                onMouseLeave={() => setIsOpen(false)}>
-                {trans("pages")}
-                <FaAngleDown className="w-3 h-3 text-slate-600 ml-2" />
-              </li>
-              {isOpen && (
-                <ul
-                  onMouseEnter={() => setIsOpen(true)}
-                  onMouseLeave={() => setIsOpen(false)}
-                  className="absolute left-0 top-5 bg-white rounded-md p-4 shadow-md w-[200px] flex flex-col items-start gap-3 z-50">
-                  <li
-                    className={cn(
-                      "text-slate-500 font-semibold text-sm hover:text-blue transition-all",
-                      isLTR() ? " hover:ml-3" : " hover:mr-3",
-                    )}>
-                    <Link href={URLS.pages.aboutUs}>{trans("about")}</Link>
-                  </li>
-                  <li
-                    className={cn(
-                      "text-slate-500 font-semibold text-sm hover:text-blue transition-all",
-                      isLTR() ? " hover:ml-3" : " hover:mr-3",
-                    )}>
-                    <Link href={URLS.pages.faq}>{trans("faq")}</Link>
-                  </li>
-                  <li
-                    className={cn(
-                      "text-slate-500 font-semibold text-sm hover:text-blue transition-all",
-                      isLTR() ? " hover:ml-3" : " hover:mr-3",
-                    )}>
-                    <Link href={URLS.pages.termsConditions}>
-                      {trans("terms")}
-                    </Link>
-                  </li>
-                  <li
-                    className={cn(
-                      "text-slate-500 font-semibold text-sm hover:text-blue transition-all",
-                      isLTR() ? " hover:ml-3" : " hover:mr-3",
-                    )}>
-                    <Link href={URLS.pages.team}>{trans("team")}</Link>
-                  </li>
-                </ul>
-              )}
-            </div>
+            <li className="text-black text-sm font-semibold hover:text-blue">
+              <Link href={URLS.pages.aboutUs}>{trans("about")}</Link>
+            </li>
             <li className="text-black text-sm font-semibold hover:text-blue">
               <Link href={URLS.contactUs}>{trans("contact")}</Link>
             </li>

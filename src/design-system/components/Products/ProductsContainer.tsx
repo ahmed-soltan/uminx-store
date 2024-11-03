@@ -19,7 +19,6 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({
   additionalTitle,
 }) => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-
   const {
     filters,
     params,
@@ -43,14 +42,9 @@ const ProductsContainer: React.FC<ProductsContainerProps> = ({
         products.sort((a, b) => b.price - a.price);
       }
 
-      // Apply category filter if present
-      const filtered = filters.category
-        ? products.filter(product => product.category.id === filters.category)
-        : products;
-
-      setFilteredProducts(filtered);
+      setFilteredProducts(products);
     }
-  }, [data, filters]);
+  }, [data, filters, params]);
 
   if (isLoading) {
     return (

@@ -1,5 +1,4 @@
 import { trans } from "@mongez/localization";
-import { useState } from "react";
 
 import { modalAtom } from "design-system/atoms/model-atom";
 import {

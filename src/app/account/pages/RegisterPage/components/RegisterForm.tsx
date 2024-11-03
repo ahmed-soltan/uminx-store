@@ -15,11 +15,13 @@ import {
   FormMessage,
 } from "design-system/components/ui/form";
 import { Input } from "design-system/components/ui/input";
+import { useState } from "react";
 import { toast } from "shared/hooks/use-toast";
 import { RegisterFormSchema } from "shared/schemas/register-form-schema";
 import URLS from "shared/utils/urls";
 
 export default function RegisterForm() {
+  const [error, setError] = useState("");
   const form = useForm<z.infer<typeof RegisterFormSchema>>({
     resolver: zodResolver(RegisterFormSchema),
     defaultValues: {
@@ -47,10 +49,7 @@ export default function RegisterForm() {
       navigateTo(URLS.auth.verifyEmail);
     } catch (error: any) {
       console.error(error);
-      toast({
-        variant: "destructive",
-        title: error.response.data.messages[0].error,
-      });
+      setError(error.response.data.error);
     }
   };
 
@@ -191,10 +190,12 @@ export default function RegisterForm() {
               </FormItem>
             )}
           />
+          {error && <p className="text-red text-sm font-medium">{error}</p>}
         </div>
         <Button
           variant={"primary"}
           size={"lg"}
+          disabled={isLoading}
           className="w-full rounded-full h-12">
           {trans("createAccount")}
         </Button>

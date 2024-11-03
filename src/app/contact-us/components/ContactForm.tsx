@@ -158,7 +158,7 @@ export default function ContactForm() {
           </div>
           <Button
             variant={"primary"}
-            className="rounded-full flex items-center justify-center"
+            className="w-full"
             disabled={isSubmitting}
             size={"lg"}>
             {trans("Send Message")}
