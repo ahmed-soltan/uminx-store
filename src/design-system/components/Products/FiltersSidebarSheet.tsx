@@ -42,7 +42,6 @@ export default function FiltersSidebarSheet({
   filters,
   paginationInfo,
 }: FiltersSidebarSheetProps) {
-
   return (
     <Sheet>
       <SheetTrigger className="flex items-center">

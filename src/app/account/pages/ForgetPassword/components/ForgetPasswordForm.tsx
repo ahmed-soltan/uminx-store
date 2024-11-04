@@ -15,11 +15,14 @@ import {
   FormMessage,
 } from "design-system/components/ui/form";
 import { Input } from "design-system/components/ui/input";
+import { useState } from "react";
+import { FiAlertTriangle } from "react-icons/fi";
 import { toast } from "shared/hooks/use-toast";
 import { ForgetPasswordFormSchema } from "shared/schemas/forget-password-form-schema";
 import URLS from "shared/utils/urls";
 
 export default function ForgetPasswordForm() {
+  const [error, setError] = useState("");
   const form = useForm<z.infer<typeof ForgetPasswordFormSchema>>({
     resolver: zodResolver(ForgetPasswordFormSchema),
     defaultValues: {
@@ -40,10 +43,7 @@ export default function ForgetPasswordForm() {
       navigateTo(URLS.auth.resetPassword);
     } catch (error: any) {
       console.error(error);
-      toast({
-        variant: "destructive",
-        title: error.response.data.messages[0].error,
-      });
+      setError(error.response.data.error);
     }
   };
 
@@ -55,6 +55,12 @@ export default function ForgetPasswordForm() {
         <h1 className="text-primary text-center text-xl md:text-2xl font-semibold">
           {trans("resetPassword")}
         </h1>
+        {!!error && (
+          <div className="bg-rose-500/15 p-4 rounded-md flex items-center gap-x-2 text-md text-rose-500 mb-6 w-full">
+            <FiAlertTriangle className="size-5" />
+            <p>{error}</p>
+          </div>
+        )}
         <div className="flex flex-col items-start justify-center space-y-4 w-full">
           <FormField
             name="email"

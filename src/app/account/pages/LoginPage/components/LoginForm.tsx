@@ -16,6 +16,7 @@ import {
 } from "design-system/components/ui/form";
 import { Input } from "design-system/components/ui/input";
 import { useState } from "react";
+import { FiAlertTriangle } from "react-icons/fi";
 import { toast } from "shared/hooks/use-toast";
 import { LoginFormSchema } from "shared/schemas/login-form-schema";
 import URLS from "shared/utils/urls";
@@ -61,6 +62,12 @@ export default function LoginForm() {
           {trans("login")}
         </h1>
         <div className="flex flex-col items-start justify-center space-y-4 w-full">
+          {!!error && (
+            <div className="bg-rose-500/15 p-4 rounded-md flex items-center gap-x-2 text-md text-rose-500 mb-6 w-full">
+              <FiAlertTriangle className="size-5" />
+              <p>{error}</p>
+            </div>
+          )}
           <FormField
             name="email"
             control={form.control}
@@ -109,7 +116,6 @@ export default function LoginForm() {
             className="text-cyan-600 text-sm">
             {trans("forgotPassword")}
           </Link>
-          {error && <p className="text-red text-sm font-medium">{error}</p>}
         </div>
         <Button
           variant={"primary"}

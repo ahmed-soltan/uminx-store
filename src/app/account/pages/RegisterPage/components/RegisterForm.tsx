@@ -1,9 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { trans } from "@mongez/localization";
+import { Link, navigateTo } from "@mongez/react-router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FiAlertTriangle } from "react-icons/fi";
 import { z } from "zod";
 
-import { Link, navigateTo } from "@mongez/react-router";
 import { register } from "app/account/services/auth";
 import { Button } from "design-system/components/ui/button";
 import {
@@ -15,7 +17,6 @@ import {
   FormMessage,
 } from "design-system/components/ui/form";
 import { Input } from "design-system/components/ui/input";
-import { useState } from "react";
 import { toast } from "shared/hooks/use-toast";
 import { RegisterFormSchema } from "shared/schemas/register-form-schema";
 import URLS from "shared/utils/urls";
@@ -38,8 +39,7 @@ export default function RegisterForm() {
 
   const onSubmit = async (data: z.infer<typeof RegisterFormSchema>) => {
     try {
-      const res = await register(data);
-      console.log(res);
+      await register(data);
       toast({
         variant: "success",
         title: trans("accountCreatedSuccessfully"),
@@ -49,7 +49,7 @@ export default function RegisterForm() {
       navigateTo(URLS.auth.verifyEmail);
     } catch (error: any) {
       console.error(error);
-      setError(error.response.data.error);
+      setError(error.response.data.messages[0].error);
     }
   };
 
@@ -61,6 +61,12 @@ export default function RegisterForm() {
         <h1 className="text-primary text-center text-xl md:text-2xl font-semibold">
           {trans("createAccount")}
         </h1>
+        {!!error && (
+          <div className="bg-rose-500/15 p-4 rounded-md flex items-center gap-x-2 text-md text-rose-500 mb-6 w-full">
+            <FiAlertTriangle className="size-5" />
+            <p>{error}</p>
+          </div>
+        )}
         <div className="flex flex-col items-start justify-center space-y-4 w-full">
           <FormField
             name="firstName"
@@ -190,7 +196,6 @@ export default function RegisterForm() {
               </FormItem>
             )}
           />
-          {error && <p className="text-red text-sm font-medium">{error}</p>}
         </div>
         <Button
           variant={"primary"}
